@@ -1,32 +1,33 @@
-package bg.softuni.supermarket.models;
+package bg.softuni.supermarket.models.dto;
+
+import bg.softuni.supermarket.models.Product;
+import bg.softuni.supermarket.models.Town;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "shops")
-public class Shop extends BaseEntity {
-    @Column(unique = true)
+public class ShopSeedDto {
+    @NotNull
+    @Size(min = 2)
     private String address;
+    @NotNull
+    @Size(min = 2)
     private String name;
-    @ManyToOne
-    private Town town;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "shops_products",
-            joinColumns = @JoinColumn(name = "shop_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
-    private List<Product> products;
+    private TownSeedDto town;
+    private List<ProductSeedDto> products;
 
-    public List<Product> getProducts() {
+    public List<ProductSeedDto> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<ProductSeedDto> products) {
         this.products = products;
     }
 
-    public void addProduct(Product product) {
+    public void addProduct(ProductSeedDto product) {
         if (this.products == null) {
             this.products = new ArrayList<>();
             this.products.add(product);
@@ -35,11 +36,11 @@ public class Shop extends BaseEntity {
         this.products.add(product);
     }
 
-    public Town getTown() {
+    public TownSeedDto getTown() {
         return town;
     }
 
-    public void setTown(Town town) {
+    public void setTown(TownSeedDto town) {
         this.town = town;
     }
 
